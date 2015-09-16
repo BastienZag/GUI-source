@@ -186,6 +186,7 @@ module.exports = function(grunt) {
 	grunt.recursivelyLoadTasks('grunt-prompt', '../node_modules');
 	grunt.recursivelyLoadTasks('grunt-wakeup', '../node_modules');
 	grunt.recursivelyLoadTasks('grunt-font', '../node_modules');
+	grunt.recursivelyLoadTasks('grunt-includes', '../node_modules');
 
 
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -298,6 +299,7 @@ module.exports = function(grunt) {
 		var grunticon = {};
 		var clean = {};
 		var brands = ['BOM', 'BSA', 'STG', 'WBC'];
+		var concatTests = {};
 
 		var module = grunt.file.readJSON( 'module.json' );
 		var core = GetCore( grunt, module.ID );
@@ -487,6 +489,11 @@ module.exports = function(grunt) {
 				},
 			};
 
+			concatTests[ version + 'JS' ] = {
+				src: '**/*.spec.js',
+				dest: version + '/tests/_specs.js',
+			};
+
 		});
 
 
@@ -517,6 +524,9 @@ module.exports = function(grunt) {
 
 		grunt.config.set('font', font);
 		grunt.task.run('font');
+
+		grunt.config.set('concat', concatTests);
+		grunt.task.run('concat');
 
 	});
 
@@ -721,6 +731,7 @@ module.exports = function(grunt) {
 					'**/*.html',
 
 					'!**/tests/**/*.*',
+					'!**/specs/*.spec.js',
 					'!node_modules/**/*.*',
 					'!**/*.svg',
 					'!Gruntfile.js',
@@ -808,5 +819,27 @@ module.exports = function(grunt) {
 		'connect',
 		'watchVersions',
 	]);
+
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// Tests : specs files
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------
+	grunt.registerTask('specs', 'add front-end tests', function() {
+
+		var module = grunt.file.readJSON( 'module.json' );
+		var concatTests = {};
+
+		//iterate over all versions
+		Object.keys( module.versions ).forEach(function iterateCore( version ) {
+			concatTests[ version + 'JS' ] = {
+				src: '**/*.spec.js',
+				dest: version + '/tests/_specs.js',
+			};
+		});
+
+		//running tasks
+		grunt.config.set('concat', concatTests);
+		grunt.task.run('concat');
+
+	});
 
 };

@@ -54,6 +54,14 @@
 		}
 	</style>
 
+	<link rel="stylesheet" href="../../../../node_modules/mocha/mocha.css" />
+	<style>
+		#mocha-stats {
+			top: 55px;
+		}
+	</style>
+
+
 	<!--[if lt IE 9]>
 		<script>
 			/* @preserve HTML5 Shiv 3.7.2 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed */
@@ -80,6 +88,7 @@
 	</header>
 
 	<main class="container">
+
 <h2>buttons</h2>
 
 <button type="button" class="btn btn-primary">Primary</button>
@@ -681,6 +690,22 @@
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 	</main>
+
+	<div>
+		<div id="mocha"></div>
+		<script src="../../../../node_modules/jquery/dist/jquery.js"></script>
+		<script src="../../../../node_modules/chai/chai.js"></script>
+		<script src="../../../../node_modules/mocha/mocha.js"></script>
+		<script>
+			var expect = chai.expect;
+			var should = chai.should();
+		</script>
+		<script>mocha.setup('bdd')</script>
+		<script src="../_specs.js"></script>
+		<script>
+			mocha.run();
+		</script>
+	</div>
 
 	<script src="assets/js/gui.js"></script>
 </body>
